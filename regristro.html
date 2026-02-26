@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Registration - Tech Event 2024</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#6C132B", // Burgundy/Guinda
+                        "primary-hover": "#560f22",
+                        "background-light": "#F3F4F6",
+                        "background-dark": "#1A0F0F",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#2A1818",
+                        "input-bg-light": "#F9FAFB",
+                        "input-bg-dark": "#3A2222",
+                        "input-border-light": "#D1D5DB",
+                        "input-border-dark": "#523333",
+                        "text-light": "#1F2937",
+                        "text-dark": "#E5E7EB",
+                        "text-muted-light": "#6B7280",
+                        "text-muted-dark": "#9CA3AF",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(108, 19, 43, 0.15)',
+                    }
+                },
+            },
+        };</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-sans min-h-screen flex flex-col justify-center items-center py-12 sm:px-6 lg:px-8 transition-colors duration-300">
+<div class="absolute top-0 w-full p-6 flex justify-between items-center">
+<div class="flex items-center gap-3">
+<img alt="UTVAM Logo" class="h-12 w-auto object-contain" src="{{DATA:IMAGE:IMAGE_5}}"/>
+<div class="hidden sm:block">
+<h2 class="text-xl font-bold text-text-light dark:text-white leading-none tracking-tight">UTVAM</h2>
+</div>
+</div>
+<div class="hidden sm:block">
+<span class="px-4 py-1 rounded-full border border-primary/30 text-primary text-xs font-medium bg-primary/5">
+                Edición 2024
+            </span>
+</div>
+</div>
+<div class="w-full max-w-md mt-10 relative">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-orange-600 rounded-2xl blur opacity-20 dark:opacity-30 transition duration-1000 group-hover:opacity-100"></div>
+<div class="relative bg-card-light dark:bg-card-dark rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-red-900/30">
+<div class="bg-primary px-8 py-8 text-center relative overflow-hidden">
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 10px 10px;"></div>
+<div class="relative z-10 flex flex-col items-center justify-center text-white"><img alt="UTVAM Logo" class="h-20 w-auto object-contain mb-4 mx-auto" src="{{DATA:IMAGE:IMAGE_5}}"/>
+<p class="text-xs font-bold tracking-[0.2em] uppercase opacity-90">Tech Event 2024</p></div>
+</div>
+<div class="px-8 py-8">
+<div class="text-center mb-8">
+<h2 class="text-2xl font-bold text-text-light dark:text-white mb-2">Registro de Pasaporte</h2>
+<p class="text-sm text-text-muted-light dark:text-text-muted-dark">
+                        Ingresa tus datos escolares para generar tu acceso digital único y seguro.
+                    </p>
+</div>
+<form action="#" class="space-y-5" method="POST">
+<div>
+<label class="block text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider mb-1.5" for="matricula">
+                            Matrícula
+                        </label>
+<div class="relative rounded-md shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-icons text-gray-400 text-lg">badge</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3 border border-input-border-light dark:border-input-border-dark rounded-lg bg-input-bg-light dark:bg-input-bg-dark text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow sm:text-sm" id="matricula" name="matricula" placeholder="A01234567" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider mb-1.5" for="nombre">
+                            Nombre Completo
+                        </label>
+<div class="relative rounded-md shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-icons text-gray-400 text-lg">person</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3 border border-input-border-light dark:border-input-border-dark rounded-lg bg-input-bg-light dark:bg-input-bg-dark text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow sm:text-sm" id="nombre" name="nombre" placeholder="Juan Pérez" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider mb-1.5" for="grupo">
+                            Grupo
+                        </label>
+<div class="relative rounded-md shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-icons text-gray-400 text-lg">groups</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3 border border-input-border-light dark:border-input-border-dark rounded-lg bg-input-bg-light dark:bg-input-bg-dark text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow sm:text-sm" id="grupo" name="grupo" placeholder="GPO-402" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider mb-1.5" for="password">
+                                Contraseña
+                            </label>
+<div class="relative rounded-md shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-icons text-gray-400 text-lg">lock</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3 border border-input-border-light dark:border-input-border-dark rounded-lg bg-input-bg-light dark:bg-input-bg-dark text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow sm:text-sm" id="password" name="password" placeholder="••••••" type="password"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-text-muted-light dark:text-text-muted-dark uppercase tracking-wider mb-1.5" for="confirm_password">
+                                Confirmar
+                            </label>
+<div class="relative rounded-md shadow-sm">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-icons text-gray-400 text-lg">lock_reset</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3 border border-input-border-light dark:border-input-border-dark rounded-lg bg-input-bg-light dark:bg-input-bg-dark text-text-light dark:text-text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow sm:text-sm" id="confirm_password" name="confirm_password" placeholder="••••••" type="password"/>
+</div>
+</div>
+</div>
+<div class="pt-4">
+<button class="group relative w-full flex justify-center py-3.5 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 shadow-lg shadow-primary/30" type="submit">
+<span class="absolute left-0 inset-y-0 flex items-center pl-3">
+<span class="material-icons group-hover:scale-110 transition-transform text-white/80">qr_code</span>
+</span>
+                            GENERAR MI PASAPORTE
+                        </button>
+</div>
+</form>
+<div class="mt-6 text-center">
+<p class="text-xs text-text-muted-light dark:text-text-muted-dark">
+                        Al registrarte aceptas los <a class="font-medium text-primary hover:text-primary-hover underline decoration-primary/30" href="#">términos y condiciones</a> del evento.
+                    </p>
+</div>
+</div>
+</div>
+<div class="text-center mt-8">
+<p class="text-[10px] font-semibold tracking-widest text-text-muted-light dark:text-text-muted-dark opacity-60 uppercase">
+<span class="text-primary">•</span> Powered by TechCore <span class="text-primary">•</span>
+</p>
+</div>
+</div>
+<div class="fixed bottom-4 right-4 z-50">
+<button class="p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg text-gray-800 dark:text-white hover:scale-110 transition-transform" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-icons dark:hidden">dark_mode</span>
+<span class="material-icons hidden dark:block">light_mode</span>
+</button>
+</div>
+</body></html>
