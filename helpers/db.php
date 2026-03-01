@@ -1,5 +1,4 @@
 <?php
-
 /** For MySQL connection, queries, and table management. Uses MySQLi with prepared statements for security and simplicity. */
 require_once __DIR__ . '/mysql.php';
 $MyDBClass = MyDatabase::class;
@@ -24,19 +23,6 @@ class Table
 	{
         global $MyDBClass;
 		if (self::$connection === null) {
-			// If no config provided, try to load from configs.php
-			if (empty($config)) {
-				if (file_exists(__DIR__ . '/../configs.php')) {
-					$db = include __DIR__ . '/../configs.php';
-					$config = [
-						'host' => $db['servidor'] ?? 'localhost',
-						'user' => $db['usuario'] ?? 'root',
-						'pass' => $db['contrasena'] ?? '',
-						'db'   => $db['base_datos'] ?? null,
-						'port' => $db['puerto'] ?? 3306,
-					];
-				}
-			}
 			self::$connection = new $MyDBClass($config);
 		}
 		return self::$connection;
@@ -72,7 +58,7 @@ class Table
 	 * @return mixed Inserted id
 	 * @throws Exception
 	 */
-	public function insert(array $data)
+	public function insert(array $data): mixed
 	{
 		return self::$connection->insert($this->table, $data);
 	}
@@ -90,7 +76,7 @@ class Table
 	 * @return array|null Associative array or null
 	 * @throws Exception
 	 */
-	public function select(string $where = '', array $params = [])
+	public function select(string $where = '', array $params = []): ?array
 	{
 		return self::$connection->select($this->table, $where, $params);
 	}
@@ -129,7 +115,7 @@ class Table
 	 * @return int Number of affected rows
 	 * @throws Exception
 	 */
-	public function update(array $data, string $where, array $params = [])
+	public function update(array $data, string $where, array $params = []): int
 	{
 		return self::$connection->update($this->table, $data, $where, $params);
 	}
@@ -149,7 +135,7 @@ class Table
 	 * @return int Number of affected rows
 	 * @throws Exception
 	 */
-	public function delete(string $where, array $params = [])
+	public function delete(string $where, array $params = []): int
 	{
 		return self::$connection->delete($this->table, $where, $params);
 	}
@@ -186,19 +172,121 @@ class Table
 	{
 		return $this->table;
 	}
-
-	/**
-	 * Get the static database connection instance.
-	 * Useful if you need to run operations outside of this table.
-     *
-     * $db = Table::getDB();
-     *
-     * $custom = $db->selectAll('users');
-	 *
-	 * @return MySQLDatabase
-	 */
-	public static function getDB() : mixed
+	public function getFields() : array
 	{
-		return self::$connection ?? self::getConnection();
+		return self::$connection->getFields($this->table);
+	}
+}
+
+class Model extends Table
+{
+	private $data = [];
+	public function __construct(string $table, array $config = [])
+	{
+		parent::__construct($table, $config);
+		$fields = parent::getFields();
+		foreach ($fields as $field) {
+			$this->data[$field] = null;
+		}
+	}
+	public function __get($name): mixed
+	{
+		if (!array_key_exists($name, $this->data)) {
+			if ($name === "pk") {
+				$name = "id";
+			} else {
+				throw new Exception("Undefined property: {$name}");
+			}
+		}
+		return $this->data[$name];
+	}
+	public function __set($name, $value)
+	{
+		if(!array_key_exists($name, $this->data)) {
+			if ($name === "pk") {
+				$name = "id";
+			} else {
+				throw new Exception("Undefined property: {$name}");
+			}
+		}
+		$this->data[$name] = $value;
+	}
+	public function get($pk): bool
+	{
+		$this->pk = $pk;
+		$row = parent::select('id = ?', [$pk]);
+		if ($row) {
+			foreach ($row as $key => $value) {
+				$this->data[$key] = $value;
+			}
+			return true;
+		}
+		return false;
+	}
+	public function save(): bool
+	{
+		if ($this->pk) {
+			return parent::update($this->data, 'id = ?', [$this->pk]);
+		} else {
+			$data = $this->data;
+			unset($data['id']);
+			$this->pk = parent::insert($data);
+			$this->data['id'] = $this->pk;
+			return $this->pk !== false;
+		}
+	}
+	/**
+	 * Delete the current model or execute a custom delete.
+	 *
+	 * When called with no arguments the method will delete the row
+	 * identified by the primary key previously loaded via {@see get()}.
+	 * If parameters are provided they are forwarded to {@see Table::delete()}.
+	 *
+	 * Signature matches the parent to avoid fatal errors.
+	 *
+	 * @param string $where SQL WHERE clause (without 'WHERE' keyword)
+	 * @param array $params Parameter values for placeholders
+	 * @return int Number of affected rows
+	 * @throws Exception
+	 */
+	public function delete(string $where = '', array $params = []): int
+	{
+		// if called without arguments we use the stored primary key
+		if (func_num_args() === 0) {
+			if (!$this->pk) {
+				throw new Exception("Cannot delete: no primary key set");
+			}
+			$result = parent::delete('id = ?', [$this->pk]);
+		} else {
+			$result = parent::delete($where, $params);
+		}
+
+		if ($result) {
+			$this->pk = null;
+			foreach ($this->data as $key => $value) {
+				$this->data[$key] = null;
+			}
+		}
+		return $result;
+	}
+	public function toArray(): array
+	{
+		return $this->data;
+	}
+	public function fromArray(array $data)
+	{
+		foreach ($data as $key => $value) {
+			if (array_key_exists($key, $this->data)) {
+				$this->data[$key] = $value;
+			}
+		}
+	}
+	public function getPK(): mixed
+	{
+		return $this->pk;
+	}
+	public function getAll(): array
+	{
+		return parent::selectAll();
 	}
 }
