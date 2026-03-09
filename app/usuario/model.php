@@ -174,4 +174,13 @@ class Usuario extends Model
         return false;
     }
 
+    public function logout(): void {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        unset($_SESSION["current_user"]);
+        session_destroy();
+        $this->authenticated = false;
+    }
+
 }

@@ -40,6 +40,10 @@ if ($accion === 'create') {
         $errors[] = "Error al eliminar el usuario: " . $e->getMessage();
         $accion = 'mostrar';
     }
+} elseif ($accion === 'logout' || $accion === 'salir') {
+    $object->logout();
+    header('Location: index.php');
+    exit();
 }
 ?><!DOCTYPE html>
 <html lang="es-MX">
