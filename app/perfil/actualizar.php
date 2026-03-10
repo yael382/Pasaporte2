@@ -1,6 +1,6 @@
 <?php
 $object->get(getvar('pk'));
-?>
+?>e
 <h2 class="text-secondary">Actualizar Perfil: <?php echo htmlspecialchars($object); ?></h2>
 
 <div class="card">
