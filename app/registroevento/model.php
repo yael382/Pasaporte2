@@ -11,64 +11,68 @@ class Registro
 {
     private Table $tbl;
     private array $config;
+    private Evento $evt;
+	private Usuario $usr;
 
     public function __construct(array $config = [])
     {
         $this->config = $config;
         $this->tbl = new Table('registro', $config);
+        $this->evt = new Evento();
+        $this->usr = new Usuario();
     }
 
     public function getTodosEventos(): array
     {
-        return $this->tbl->query(
-            "SELECT id, nombre, fecha_hora, lugar FROM evento ORDER BY fecha_hora DESC",
-            []
-        );
+        return $this->evt->selectAll();
     }
 
     public function getGrupos(): array
-    {
-        return $this->tbl->query(
-            "SELECT DISTINCT grupo FROM usuario WHERE activo = 1 AND grupo IS NOT NULL AND grupo != '' ORDER BY grupo",
-            []
-        );
-    }
-
-    public function getCategorias(): array
-    {
-        return $this->tbl->query(
-            "SELECT DISTINCT categoria FROM usuario WHERE activo = 1 AND categoria IS NOT NULL AND categoria != '' ORDER BY categoria",
-            []
-        );
-    }
-
-    public function buscarUsuarios(string $busqueda = '', string $grupo = '', string $categoria = ''): array
-    {
-        $sql = "SELECT id, username, nombre, apaterno, amaterno, grupo, categoria
-                FROM usuario
-                WHERE activo = 1";
-        $params = [];
-
-        if (!empty($grupo)) {
-            $sql .= " AND grupo = ?";
-            $params[] = $grupo;
-        }
-        if (!empty($categoria)) {
-            $sql .= " AND categoria = ?";
-            $params[] = $categoria;
-        }
-        if (!empty($busqueda)) {
-            $sql .= " AND (username LIKE ? OR nombre LIKE ? OR apaterno LIKE ? OR amaterno LIKE ?)";
-            $like = '%' . $busqueda . '%';
-            $params[] = $like;
-            $params[] = $like;
-            $params[] = $like;
-            $params[] = $like;
-        }
-
-        $sql .= " ORDER BY nombre, apaterno, amaterno";
-        return $this->tbl->query($sql, $params);
-    }
+	{
+		$usuarios = $this->usr->selectAll();
+		$usuarios = array_filter($usuarios, function ($u) { return $u['activo'] == 1; });
+		$grupos   = array_column($usuarios, 'grupo');
+		$grupos   = array_filter($grupos, function ($g) { return !empty($g); });
+		$grupos   = array_unique($grupos);
+		sort($grupos);
+ 
+		return array_map(function ($g) { return ['grupo' => $g]; }, $grupos);
+	}
+ 
+	public function getCategorias(): array
+	{
+		$usuarios   = $this->usr->selectAll();
+		$usuarios   = array_filter($usuarios,   function ($u) { return $u['activo'] == 1; });
+		$categorias = array_column($usuarios, 'categoria');
+		$categorias = array_filter($categorias, function ($c) { return !empty($c); });
+		$categorias = array_unique($categorias);
+		sort($categorias);
+ 
+		return array_map(function ($c) { return ['categoria' => $c]; }, $categorias);
+	}
+ 
+	public function buscarUsuarios(string $busqueda = '', string $grupo = '', string $categoria = ''): array
+	{
+		$usuarios = $this->usr->selectAll();
+		$usuarios = array_filter($usuarios, function ($u) use ($busqueda, $grupo, $categoria) {
+			if ($u['activo'] != 1) return false;
+			if (!empty($grupo)     && ($u['grupo']     ?? '') !== $grupo)     return false;
+			if (!empty($categoria) && ($u['categoria'] ?? '') !== $categoria) return false;
+			if (!empty($busqueda)) {
+				$b        = mb_strtolower($busqueda);
+				$haystack = mb_strtolower(implode(' ', [
+					$u['username'] ?? '',
+					$u['nombre']   ?? '',
+					$u['apaterno'] ?? '',
+					$u['amaterno'] ?? '',
+				]));
+				if (strpos($haystack, $b) === false) return false;
+			}
+			return true;
+		});
+ 
+		return array_values($usuarios);
+	}
 
     public function existeRegistro(int $evento_id, int $usuario_id): bool
     {

@@ -95,7 +95,7 @@ if(getvar("accion") === "login") {
                     <div class="d-grid gap-2">
                     <a href="registroevento.php" class="btn btn-outline-secondary">
                         <i class="fa-solid fa-user-plus"></i>
-                        Registros
+                        Administrar Registros a Eventos
                     </a>
                     </div>
                 </div>
