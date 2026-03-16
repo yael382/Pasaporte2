@@ -20,9 +20,7 @@ class Usuario extends Model
 
     private $authenticated = false;
 
-    public function __construct(array $config = [])
-    {
-        parent::__construct('usuario', config: $config);
+    private static function initialize_statics(array $config = []) {
         if(self::$db_config === null) {
             self::$db_config = $config;
         }
@@ -40,9 +38,20 @@ class Usuario extends Model
         }
     }
 
+    public function __construct(array $config = [])
+    {
+        parent::__construct('usuario', config: $config);
+        self::initialize_statics($config);
+    }
+
     public function __tostring(): string
     {
         return $this->nombre ? trim($this->nombre . " " . $this->apaterno . " " . $this->amaterno) : "Usuario";
+    }
+
+    public function __wakeup()
+    {
+        self::initialize_statics();
     }
 
     public function getAll(): array
@@ -102,10 +111,10 @@ class Usuario extends Model
         if(is_string($perms)) {
             list($tipo, $codename) = explode(".", $perms);
             if($codename === "*") {
-                if (count($perms = self::$permisos->selectAll("tipo = ?", [$tipo])) === 0) {
+                if (count($permisos_encontrados = self::$permisos->selectAll("tipo = ?", [$tipo])) === 0) {
                     throw new Exception("No se ha encontrado el tipo de permiso: " . $tipo);
                 }
-                $ids = array_column($perms, "id");
+                $ids = array_column($permisos_encontrados, "id");
                 $placeholders = implode(',', array_fill(0, count($ids), '?'));
                 if (self::$tbl_usuario_tiene_permiso->select("usuario_id = ? and permiso_id in ($placeholders)", [$this->pk, ...$ids]) !== null) {
                     return true;
@@ -120,6 +129,7 @@ class Usuario extends Model
             }
             foreach(self::$tbl_usuario_tiene_perfil->selectAll("usuario_id = ?", [$this->pk]) as $p_id) {
                 $perfil = new Perfil(self::$db_config);
+                $perfil->get($p_id["perfil_id"]);
                 if($perfil->can($perms)) {
                     return true;
                 }
