@@ -97,7 +97,9 @@ class Usuario extends Model
     }
 
     public function can($perms, $able_if_superuser = true, $able_if_authenticated = true): bool {
-
+            if (self::$permisos === null || self::$tbl_usuario_tiene_perfil === null) {
+            new self(self::$db_config ?? []);
+             }
         if($able_if_superuser && $this->superusuario) { return true; }
         if($able_if_authenticated && !$this->is_authenticated()) { return false; }
         if(is_string($perms)) {
