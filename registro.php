@@ -23,7 +23,7 @@ $errors = registrar_usuario();
         <div class="flex-grow-1 d-flex justify-content-center align-items-center">
             <form class="p-4 rounded shadow custom-border" style="width: 100%; max-width: 500px;" method="post" action="registro.php" autocomplete="off">
                 <h1 class="text-center mb-4">Registro de Nuevo Usuario</h1>
-                
+
                 <?php if (!empty($errors)): ?>
                     <div class="alert alert-danger" role="alert">
                         <?php foreach ($errors as $error): ?>

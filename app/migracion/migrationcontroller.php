@@ -21,7 +21,7 @@ class MigrationController {
                     $messages[] = "Migración ejecutada: <strong>$file</strong>";
                 } catch (Exception $e) {
                     $errors[] = "FALLO en <strong>$file</strong>: " . $e->getMessage();
-                    break; 
+                    break;
                 }
             }
         }
