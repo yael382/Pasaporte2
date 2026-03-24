@@ -16,18 +16,16 @@ $data = $object->getAll();
 <div class="card"><div class="card-body"><table id="data-list" class="table table-hover table-sm">
     <thead>
         <tr>
-            <th>Tipo</th>
-            <th>Codename</th>
             <th>Nombre</th>
+            <th>Código</th>
             <th class="no-sort">Acciones</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($data as $permiso) : ?>
             <tr>
-                <td><?= htmlspecialchars($permiso['tipo']) ?></td>
-                <td><?= htmlspecialchars($permiso['codename']) ?></td>
                 <td><?= htmlspecialchars($permiso['nombre']) ?></td>
+                <td><?= htmlspecialchars($permiso['tipo'] . "." . $permiso['codename']) ?></td>
                 <td class="text-center">
                     <?php if($_SESSION["current_user"]->can("permiso.view_permiso")): ?>
                     <a title="Mostrar" class="btn btn-outline-secondary" href="permisos.php?accion=mostrar&pk=<?= urlencode($permiso['id']) ?>">

@@ -40,54 +40,87 @@
                         Registro Rápido a Eventos
                     <?php endif; ?>
 
-                    <?php if ($_SESSION["current_user"]->can("otro.registrar_en_evento")): ?>
-                    <li class="nav-item text-center"><a href="registroevento.php" class="nav-link">
-                        <i class="fa-solid fa-user-plus"></i>
-                        Administrar Registros a Eventos
-                    </a></li>
-                    <?php endif; ?>
-
                     <li class="nav-item text-center"><a href="lector_qr.php" class="nav-link">
                         <i class="fa-solid fa-qrcode"></i>
                         Lector QR
                     </a></li>
 
-                    <?php if ($_SESSION["current_user"]->can("evento.*")): ?>
-                    <li class="nav-item text-center"><a href="eventos.php" class="nav-link">
-                        <i class="fa-regular fa-calendar-days"></i>
-                        Eventos
-                    </a></li>
+                    <?php if($_SESSION["current_user"]->can([
+                        "otro.registrar_en_evento", "evento.*"
+                        ])): ?>
+                    <li class="nav-item text-center">
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" href="#" role="button">
+                                <i class="fa-solid fa-calendar-day"></i>
+                                Eventos
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+
+                            <?php if ($_SESSION["current_user"]->can("otro.registrar_en_evento")): ?>
+                                <li><a href="registroevento.php" class="dropdown-item text-center">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                    Administrar Registros a Eventos
+                                </a></li>
+                            <?php endif; ?>
+
+                            <?php if ($_SESSION["current_user"]->can("evento.*")): ?>
+                                <li><a href="eventos.php" class="dropdown-item text-center">
+                                    <i class="fa-regular fa-calendar-days"></i>
+                                    Eventos
+                                </a></li>
+                            <?php endif; ?>
+
+                            </ul>
+                        </div>
+                    </li>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION["current_user"]->can("migracion.run_migracion")): ?>
-                        <li class="nav-item text-center"><a href="migrations.php" class="nav-link">
-                            <i class="fa-solid fa-database"></i>
-                            Migraciones
-                        </a></li>
-                    <?php endif; ?>
+                    <?php if($_SESSION["current_user"]->can([
+                        "migracion.run_migracion", "usuario.*",
+                        "perfil.*", "permiso.*"
+                        ])): ?>
+                    <li class="nav-item text-center">
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" href="#" role="button">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                Administración
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
 
-                    <?php if ($_SESSION["current_user"]->can("usuario.*")): ?>
-                    <li class="nav-item text-center"><a href="usuarios.php" class="nav-link">
-                        <i class="fa-solid fa-users"></i>
-                        Usuarios
-                    </a></li>
-                    <?php endif; ?>
+                                <?php if ($_SESSION["current_user"]->can("migracion.run_migracion")): ?>
+                                    <li><a href="migrations.php" class="dropdown-item text-center">
+                                        <i class="fa-solid fa-database"></i>
+                                        Migraciones
+                                    </a></li>
+                                <?php endif; ?>
 
-                    <?php if($_SESSION["current_user"]->can("perfil.*")): ?>
-                    <li class="nav-item text-center"><a href="perfiles.php" class="nav-link">
-                        <span class="fa-stack" style="font-size: 0.7em;">
-                            <i class="fa-brands fa-superpowers fa-stack-2x"></i>
-                            <i class="fa-solid fa-users fa-stack-1x"></i>
-                        </span>
-                        Perfiles
-                    </a></li>
-                    <?php endif; ?>
+                                <?php if ($_SESSION["current_user"]->can("usuario.*")): ?>
+                                    <li><a href="usuarios.php" class="dropdown-item text-center">
+                                        <i class="fa-solid fa-users"></i>
+                                        Usuarios
+                                    </a></li>
+                                <?php endif; ?>
 
-                    <?php if ($_SESSION["current_user"]->can("permiso.*")): ?>
-                    <li class="nav-item text-center"><a href="permisos.php" class="nav-link">
-                        <i class="fa-brands fa-superpowers"></i>
-                        Permisos
-                    </a></li>
+                                <?php if ($_SESSION["current_user"]->can("perfil.*")): ?>
+                                    <li><a href="perfiles.php" class="dropdown-item text-center">
+                                        <span class="fa-stack" style="font-size: 0.7em;">
+                                            <i class="fa-brands fa-superpowers fa-stack-2x"></i>
+                                            <i class="fa-solid fa-users fa-stack-1x"></i>
+                                        </span>
+                                        Perfiles
+                                    </a></li>
+                                <?php endif; ?>
+
+                                <?php if ($_SESSION["current_user"]->can("permiso.*")): ?>
+                                    <li><a href="permisos.php" class="dropdown-item text-center">
+                                        <i class="fa-brands fa-superpowers"></i>
+                                        Permisos
+                                    </a></li>
+                                <?php endif; ?>
+
+                            </ul>
+                        </div>
+                    </li>
                     <?php endif; ?>
 
                 </ul>
