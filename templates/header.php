@@ -34,6 +34,16 @@
             <div id="nav-principal" class="collapse navbar-collapse me-4">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-5">
 
+                    <?php if (isset($_SESSION["current_user"]) && $_SESSION["current_user"]->is_authenticated()): ?>
+                    <li class="nav-item text-center">
+                        <a href="mi_perfil.php" class="nav-link">
+                            <i class="fa-solid fa-user-gear"></i>
+                            <br>
+                            Mi Perfil
+                        </a>
+                    </li>
+                    <?php endif; ?>
+
                     <?php if ($_SESSION["current_user"]->can("otro.registrar_en_evento_rapido")): ?>
                     <li class="nav-item text-center"><a href="registrorapidoevento.php" class="nav-link">
                         <i class="fa-solid fa-user-plus"></i>
