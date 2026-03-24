@@ -113,6 +113,10 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("evento.add_evento"))
             include 'app/evento/crear.php';
         } elseif ($accion === 'mostrar' && $_SESSION["current_user"]->can("evento.view_evento")) {
             include 'app/evento/mostrar.php';
+        } elseif ($accion === 'carga-masiva' && $_SESSION["current_user"]->can("evento.add_evento_masivo")) {
+            include 'app/evento/carga-masiva.php';
+        } elseif ($accion === 'add-many-step-2' && $_SESSION["current_user"]->can("evento.add_evento_masivo")) {
+            include 'app/evento/carga-masiva-s2.php';
         }
         ?>
 

@@ -27,7 +27,6 @@ $data = $object->getAll();
             <th>Matricula</th>
             <th>Grupo</th>
             <th>Comunicación</th>
-            <th>SU</th>
             <th class="no-sort">Acciones</th>
         </tr>
     </thead>
@@ -39,7 +38,9 @@ $data = $object->getAll();
                         <input class="form-check-input" type="checkbox" role="switch" <?php echo $usuario["activo"] ? 'checked="checked"' : ''; ?> disabled="disabled" />
                     </div>
                 </td>
-                <td><?php echo htmlspecialchars(trim($usuario["nombre"] . " " . $usuario["apaterno"] . " " . $usuario["amaterno"])); ?></td>
+                <td class="<?php echo $usuario["superusuario"] ? 'text-info' : ''; ?>">
+                    <?php echo htmlspecialchars(trim($usuario["nombre"] . " " . $usuario["apaterno"] . " " . $usuario["amaterno"])); ?>
+                </td>
                 <td><?php echo htmlspecialchars($usuario["matricula"] ?? ""); ?></td>
                 <td><?php echo htmlspecialchars($usuario["grupo"] ?? ""); ?></td>
                 <td>
@@ -57,11 +58,6 @@ $data = $object->getAll();
                         <!-- WhatsApp -->
                     </a>
                     <?php endif; ?>
-                </td>
-                <td>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" <?php echo $usuario["superusuario"] ? 'checked="checked"' : ''; ?> disabled="disabled" />
-                    </div>
                 </td>
                 <td class="text-center">
                     <?php if($_SESSION["current_user"]->can("usuario.view_usuario")): ?>

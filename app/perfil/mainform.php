@@ -13,7 +13,7 @@
         id="perm-<?php echo $perm["id"]; ?>" name="permisos[]"
         <?php echo $object->can($perm["tipo"] . "." . $perm["codename"]) ? 'checked="checked"' : ''; ?> />
     <label class="form-check-label" for="perm-<?php echo $perm["id"]; ?>">
-        <?php echo $perm["tipo"] . "." . $perm["codename"] . ": " . $perm["nombre"]; ?>
+        <?php echo $perm["nombre"] . ": " . $perm["tipo"] . "." . $perm["codename"]; ?>
     </label>
 </div>
 <?php endforeach;?>
