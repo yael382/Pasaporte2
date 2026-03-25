@@ -140,6 +140,12 @@
                     </li>
                     <?php endif; ?>
 
+                    <?php if ($_SESSION["current_user"]->can("asistencia.add_asistencia")): ?>
+                    <li class="nav-item text-center"><a href="asistencia.php" class="nav-link">
+                        <i class="fa-solid fa-check"></i>
+                        Asistencia
+                    </a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
             <?php endif; ?>

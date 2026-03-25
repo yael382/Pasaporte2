@@ -53,7 +53,7 @@ class Perfil extends Model
 
     public function can($perms): bool {
         if(is_string($perms)) {
-            list($tipo, $codename) = explode(".", $perms);
+            list($tipo, $codename) = explode(".", $perms,2);
             if($codename === "*") {
                 if (count($permisos_encontrados = self::$permisos->selectAll("tipo = ?", [$tipo])) === 0) {
                     throw new Exception("No se ha encontrado el tipo de permiso: " . $tipo);
