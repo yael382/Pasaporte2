@@ -82,6 +82,12 @@
                                     Eventos
                                 </a></li>
                             <?php endif; ?>
+                            <li>
+                                <a href="mis_eventos.php" class="dropdown-item text-center">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                    Mis Eventos
+                                </a>
+                            </li>
 
                             </ul>
                         </div>

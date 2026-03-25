@@ -153,4 +153,14 @@ class Registro
         $sql .= " ORDER BY r.fecha_registro DESC";
         return $this->tbl->query($sql, $params);
     }
+
+    public function listarPorUsuario(int $usuario_id): array
+    {
+        $sql = "SELECT e.*, r.fecha_registro
+                FROM evento e 
+                INNER JOIN registro r ON e.id = r.evento_id 
+                WHERE r.usuario_id = ? 
+                ORDER BY e.fecha_hora ASC";
+        return $this->tbl->query($sql, [$usuario_id]);
+    }
 }
