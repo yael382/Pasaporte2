@@ -29,8 +29,9 @@ if(getvar("accion") === "login") {
 
         <?php if(!(isset($_SESSION["current_user"]) && $_SESSION["current_user"])): ?>
 
-            <div class="flex-grow-1 d-flex justify-content-center align-items-center">
-                <form class="p-4 rounded shadow custom-border" id="main-form" method="post" autocomplete="off">
+            <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center py-4">
+                
+                <form class="p-4 rounded shadow custom-border w-100" style="max-width: 400px;" id="main-form" method="post" autocomplete="off">
                     <h2 class="text-center mb-4">Acceso</h2>
                     <?php if(isset($err) && $err):?>
                         <div class="alert alert-danger" role="alert"><?php echo $err; ?></div>
@@ -47,7 +48,29 @@ if(getvar("accion") === "login") {
                         </small>
                     </div>
                 </form>
-            </div>
+<div class="w-100 mt-5 mb-5" style="max-width: 800px;">
+    
+    <h4 class="text-center mb-4" style="color: var(--text-color); font-weight: var(--font-weight-light); opacity: 0.8;">
+        Descubre nuestras últimas actividades
+    </h4>
+    
+    <div class="card p-3 mb-4" style="border-radius: 24px;">
+        <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
+        <iframe src="//lightwidget.com/widgets/ec85b02092e35b879334c0f3b5a05c69.html" 
+                scrolling="no" 
+                allowtransparency="true" 
+                class="lightwidget-widget" 
+                style="width:100%; border:0; overflow:hidden;">
+        </iframe>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="https://www.instagram.com/cybervibe_2026/" target="_blank" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow">
+            <i class="fab fa-instagram me-2"></i> Síguenos
+        </a>
+    </div>
+    
+</div>
 
         <?php else: ?>
 
