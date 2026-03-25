@@ -4,6 +4,14 @@ $data = $object->getAll();
 
 <div class="clearfix mb-3">
 <div class="btn-group float-end" role="group" aria-label="Barra de Herramientas">
+
+    <?php if($_SESSION["current_user"]->can("usuario.change_usuario")): ?>
+    <a type="button" class="btn btn-outline-secondary" href="usuarios.php?accion=restaurar-pwd">
+        <i class="fa-solid fa-key"></i>
+        Restaurar Contraseña
+    </a>
+    <?php endif; ?>
+
     <?php if ($_SESSION["current_user"]->can("usuario.add_usuario_masivo")): ?>
         <a type="button" class="btn btn-outline-primary" href="usuarios.php?accion=carga-masiva">
             <i class="fa-solid fa-rectangle-list"></i>

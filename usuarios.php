@@ -44,6 +44,39 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("usuario.add_usuario"
         $errors[] = "Error al guardar el usuario: " . $e->getMessage();
         $accion = 'actualizar';
     }
+} elseif ($accion === 'restaurar-pwd' && $_SESSION["current_user"]->can("usuario.change_usuario")) {
+    $username     = trim(getvar('username') ?? '');
+    $password     = getvar('password') ?? '';
+    $pwd_confirm  = getvar('password_confirm') ?? '';
+
+    if (!$username || !$password || !$pwd_confirm) {
+        $errors[] = "Todos los campos son obligatorios.";
+        $accion = 'restaurar-pwd';
+    } elseif ($password !== $pwd_confirm) {
+        $errors[] = "Las contraseñas no coinciden.";
+        $accion = 'restaurar-pwd';
+    } else {
+        $target = $object->select(
+            "username = ? OR matricula = ? OR email = ? OR TRIM(CONCAT(nombre,' ',apaterno,' ',COALESCE(amaterno,''))) = ?",
+            [$username, $username, $username, $username]
+        );
+        if ($target === null) {
+            $errors[] = "No se encontró el usuario \"" . htmlspecialchars($username) . "\".";
+            $accion = 'restaurar-pwd';
+        } else {
+            try {
+                $object->get($target['id']);
+                $nuevo_hash = password_hash($password, PASSWORD_DEFAULT);
+                $object->update(['password' => $nuevo_hash], 'id = ?', [$object->pk]);
+                $success = "Contraseña actualizada correctamente para el usuario: " . htmlspecialchars((string)$object);
+                $accion = 'restaurar-pwd';
+            } catch (Exception $e) {
+                error_log("Error restaurando contraseña: " . $e->getMessage());
+                $errors[] = "Error al restaurar la contraseña: " . $e->getMessage();
+                $accion = 'restaurar-pwd';
+            }
+        }
+    }
 } elseif (($accion === 'delete' || $accion === 'eliminar') && $_SESSION["current_user"]->can("usuario.delete_usuario")) {
     $object->pk = getvar('pk');
     try {
@@ -77,6 +110,13 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("usuario.add_usuario"
             </div>
         <?php endforeach; ?>
 
+        <?php if (isset($success)): ?>
+            <div class="alert alert-success" role="alert">
+                <i class="fa-solid fa-circle-check"></i>
+                <?php echo $success; ?>
+            </div>
+        <?php endif; ?>
+
         <?php
         if(($accion === 'listar' || $accion === null) && $_SESSION["current_user"]->can("usuario.list_usuario")) {
             include 'app/usuario/listar.php';
@@ -86,6 +126,8 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("usuario.add_usuario"
             include 'app/usuario/crear.php';
         } elseif ($accion === 'mostrar' && $_SESSION["current_user"]->can("usuario.view_usuario")) {
             include 'app/usuario/mostrar.php';
+        } elseif ($accion === 'restaurar-pwd' && $_SESSION["current_user"]->can("usuario.change_usuario")) {
+            include 'app/usuario/restaurar_pwd.php';
         } elseif ($accion === 'carga-masiva' && $_SESSION["current_user"]->can("usuario.add_usuario_masivo")) {
             include 'app/usuario/carga-masiva.php';
         } elseif ($accion === 'add-many-step-2' && $_SESSION["current_user"]->can("usuario.add_usuario_masivo")) {
