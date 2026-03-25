@@ -1,8 +1,9 @@
 <?php
 session_start();
+
+date_default_timezone_set('America/Mexico_City');
 include_once 'app/registro/controlador_registro.php';
 
-// Si el usuario ya está logueado, lo redirigimos al inicio
 if (isset($_SESSION["current_user"]) && $_SESSION["current_user"]) {
     header('Location: index.php');
     exit();

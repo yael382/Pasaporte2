@@ -40,7 +40,6 @@
                     <li class="nav-item text-center">
                         <a href="mi_perfil.php" class="nav-link">
                             <i class="fa-solid fa-user-gear"></i>
-                            <br>
                             Mi Perfil
                         </a>
                     </li>

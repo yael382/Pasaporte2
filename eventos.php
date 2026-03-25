@@ -2,6 +2,7 @@
 include_once "app/usuario/model.php";
 session_start();
 
+date_default_timezone_set('America/Mexico_City');
 include_once 'helpers/db.php';
 include_once 'helpers/vars.php';
 include_once 'app/evento/model.php';
@@ -11,7 +12,7 @@ if (!isset($_SESSION["current_user"])) {
     exit();
 }
 
-if (!$_SESSION["current_user"]->can("evento.*") && 
+if (!$_SESSION["current_user"]->can("evento.*") &&
     $accion !== null && $accion !== 'listar' && $accion !== 'mostrar') {
     header("Location: index.php");
     exit();

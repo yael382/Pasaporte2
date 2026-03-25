@@ -2,6 +2,7 @@
 include_once "app/usuario/model.php";
 session_start();
 
+date_default_timezone_set('America/Mexico_City');
 include_once 'helpers/vars.php';
 include_once 'app/perfil/model.php';
 
