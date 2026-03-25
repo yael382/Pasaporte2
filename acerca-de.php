@@ -21,7 +21,7 @@ include_once "helpers/vars.php";
 
         <div class="row my-3">
             <div class="col text-center">
-                <button onclick="toggleTheme()" id="theme-toggle" type="button" class="btn btn-outline-primary btn-sm">
+                <button onclick="toggleTheme()" id="theme-toggle-1" type="button" class="btn btn-outline-primary btn-sm">
                     UI_THEME_SELECT
                 </button>
             </div>
@@ -66,7 +66,7 @@ include_once "helpers/vars.php";
 
         <div class="row my-3">
             <div class="col text-center">
-                <button onclick="toggleTheme()" id="theme-toggle" type="button" class="btn btn-outline-primary btn-sm">
+                <button onclick="toggleTheme()" id="theme-toggle-2" type="button" class="btn btn-outline-primary btn-sm">
                     UI_THEME_SELECT
                 </button>
             </div>

@@ -4,8 +4,11 @@ let datatblDataList = null;
 const applyTheme = (themeName) => {
     document.documentElement.setAttribute('data-theme', themeName);
     localStorage.setItem('user-theme', themeName);
-    if (document.getElementById('theme-toggle')) {
-        document.getElementById('theme-toggle').innerText = `DEPLOY: ${themeLbs[themeName]}`;
+    if (document.getElementById('theme-toggle-1')) {
+        document.getElementById('theme-toggle-1').innerText = `DEPLOY: ${themeLbs[themeName]}`;
+    }
+    if (document.getElementById('theme-toggle-2')) {
+        document.getElementById('theme-toggle-2').innerText = `DEPLOY: ${themeLbs[themeName]}`;
     }
 }
 
