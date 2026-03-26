@@ -1,5 +1,18 @@
 <?php
 $object->get(getvar('pk'));
+
+$tblRegistro = new Table('registro');
+$participantes = $tblRegistro->query(
+    "SELECT u.id, TRIM(CONCAT(u.nombre,' ',u.apaterno,' ',COALESCE(u.amaterno,''))) AS nombre,
+            u.matricula, u.grupo, u.email,
+            IF(a.usuario_id IS NOT NULL, 1, 0) AS asistio
+     FROM registro r
+     JOIN usuario u ON u.id = r.usuario_id
+     LEFT JOIN asistencia a ON a.evento_id = r.evento_id AND a.usuario_id = r.usuario_id
+     WHERE r.evento_id = ?
+     ORDER BY u.nombre, u.apaterno",
+    [$object->pk]
+);
 ?>
 <h2 class="text-secondary"><?php echo htmlspecialchars($object ?? ''); ?></h2>
 
@@ -37,4 +50,49 @@ $object->get(getvar('pk'));
     <fieldset disabled="disabled">
     <?php include 'mainform.php'; ?>
     </fieldset>
+</div></div>
+
+<h3 class="text-secondary mt-4">
+    <i class="fa-solid fa-users"></i>
+    Participantes
+    <span class="badge bg-secondary ms-2"><?php echo count($participantes); ?></span>
+</h3>
+
+<div class="card mt-2"><div class="card-body">
+<?php if (empty($participantes)): ?>
+    <p class="text-muted mb-0">No hay usuarios registrados en este evento.</p>
+<?php else: ?>
+    <table class="table table-hover table-sm mb-0">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Matrícula</th>
+                <th>Grupo</th>
+                <th>Email</th>
+                <th class="text-center">Registrado</th>
+                <th class="text-center">Asistió</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($participantes as $p): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($p['nombre'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($p['matricula'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($p['grupo'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($p['email'] ?? ''); ?></td>
+                <td class="text-center">
+                    <i class="fa-solid fa-circle-check text-success"></i>
+                </td>
+                <td class="text-center">
+                    <?php if ($p['asistio'] == 1): ?>
+                        <i class="fa-solid fa-circle-check text-success"></i>
+                    <?php else: ?>
+                        <i class="fa-solid fa-circle-xmark text-danger"></i>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
 </div></div>
