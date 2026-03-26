@@ -97,6 +97,7 @@ $categorias = $object->getCategorias();
                     <th>Nombre</th>
                     <th>Grupo</th>
                     <th>Categoría</th>
+                    <th>Equipo</th>
                     <th>Fecha Registro</th>
                     <th class="text-center">Acciones</th>
                 </tr>
@@ -110,6 +111,7 @@ $categorias = $object->getCategorias();
                         <td><?= htmlspecialchars(trim($reg['nombre'] . ' ' . $reg['apaterno'] . ' ' . $reg['amaterno'])) ?></td>
                         <td><?= htmlspecialchars($reg['grupo']) ?></td>
                         <td><?= htmlspecialchars($reg['categoria']) ?></td>
+                        <td><?= htmlspecialchars($reg['equipo'] ?? '—') ?></td>
                         <td><?= htmlspecialchars($reg['fecha_registro']) ?></td>
                         <td class="text-center text-nowrap">
                             <a class="btn btn-sm btn-outline-danger"

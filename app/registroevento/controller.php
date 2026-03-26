@@ -11,6 +11,7 @@ $errors = [];
 if ($method === 'POST' && $accion === 'crear') {
     $evento_id   = intval(getvar('evento_id') ?? 0);
     $usuario_ids = isset($_POST['usuario_ids']) ? (array)$_POST['usuario_ids'] : [];
+    $equipo      = trim(getvar('equipo') ?? '');
 
     if ($evento_id <= 0) {
         $errors[] = "Debes seleccionar un evento.";
@@ -20,7 +21,7 @@ if ($method === 'POST' && $accion === 'crear') {
         $accion = 'crear';
     } else {
         try {
-            $r = $object->crearMasivo($evento_id, $usuario_ids);
+            $r = $object->crearMasivo($evento_id, $usuario_ids, $equipo);
             header("Location: registroevento.php?accion=listar&ok=masivo&nuevos={$r['nuevos']}&dup={$r['duplicados']}");
             exit;
         } catch (Exception $e) {
