@@ -593,7 +593,7 @@ body {
     font-size: var(--text-xs);
     color: color-mix(in oklab, var(--color-white) 60%, transparent);
     line-height: var(--leading-relaxed);
-    padding-bottom: 100px;
+    margin-bottom: 150px;
 }
 
 button,

@@ -91,7 +91,6 @@ if(isset($_FILES["archivo-carga"]) && $_FILES["archivo-carga"]["error"] == 0){
                     <?php else: ?>
                         <span class="text-success">
                             <i class="fa-solid fa-check"></i>
-                            <input type="hidden" name="data[]" value="<?php echo $row["row"]; ?>" />
                         </span>
                     <?php endif; ?>
                 </td>
@@ -100,6 +99,11 @@ if(isset($_FILES["archivo-carga"]) && $_FILES["archivo-carga"]["error"] == 0){
     </tbody>
 </table></div></div>
 <input type="hidden" name="accion" value="add-many-step-3" />
+<?php foreach($data as $row): ?>
+    <?php if(!$row["skip"]): ?>
+        <input type="hidden" name="data[]" value="<?php echo $row["row"]; ?>" />
+    <?php endif; ?>
+<?php endforeach; ?>
 <button type="submit" class="btn btn-outline-primary">
     <i class="fa-regular fa-floppy-disk"></i>
     Guardar
