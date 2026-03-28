@@ -83,26 +83,25 @@ class Registro
         return $row !== null;
     }
 
-    public function crear(int $evento_id, int $usuario_id): bool
+    public function crear(int $evento_id, int $usuario_id, string $equipo = ''): bool
     {
         if ($this->existeRegistro($evento_id, $usuario_id)) {
             return false;
         }
-        $this->tbl->insert([
-            'evento_id'  => $evento_id,
-            'usuario_id' => $usuario_id,
-        ]);
+        $data = ['evento_id' => $evento_id, 'usuario_id' => $usuario_id];
+        if ($equipo !== '') $data['equipo'] = $equipo;
+        $this->tbl->insert($data);
         return true;
     }
 
-    public function crearMasivo(int $evento_id, array $usuario_ids): array
+    public function crearMasivo(int $evento_id, array $usuario_ids, string $equipo = ''): array
     {
         $nuevos = 0;
         $duplicados = 0;
         foreach ($usuario_ids as $uid) {
             $uid = intval($uid);
             if ($uid <= 0) continue;
-            if ($this->crear($evento_id, $uid)) {
+            if ($this->crear($evento_id, $uid, $equipo)) {
                 $nuevos++;
             } else {
                 $duplicados++;
@@ -121,7 +120,7 @@ class Registro
 
     public function listar(int $evento_id = 0, string $grupo = '', string $categoria = '', string $busqueda = ''): array
     {
-        $sql = "SELECT r.evento_id, r.usuario_id, r.fecha_registro,
+        $sql = "SELECT r.evento_id, r.usuario_id, r.fecha_registro, r.equipo,
                        e.nombre AS evento_nombre, e.fecha_hora AS evento_fecha,
                        u.username, u.nombre, u.apaterno, u.amaterno, u.grupo, u.categoria
                 FROM registro r
