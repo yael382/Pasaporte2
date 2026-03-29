@@ -1,10 +1,7 @@
 <?php
-include_once 'app/usuario/model.php';
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
-include_once 'helpers/vars.php';
-include_once 'app/registroevento/model.php';
+startAPI("otro.registrar_en_evento_rapido", "registroevento");
 
 $method  = $_SERVER['REQUEST_METHOD'];
 $object  = new Registro();
@@ -28,12 +25,6 @@ if ($method === 'POST') {
 		}
 	}
 }
-
-if (!isset($_SESSION["current_user"]) || !$_SESSION["current_user"]->can("otro.registrar_en_evento_rapido")) {
-    header("Location: index.php");
-    exit();
-}
-
 ?><!DOCTYPE html>
 <html lang="es-MX">
 <head>

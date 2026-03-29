@@ -1,17 +1,7 @@
 <?php
-include_once "app/usuario/model.php";
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
-include_once 'helpers/db.php';
-include_once 'helpers/vars.php';
-include_once 'app/evento/model.php';
-include_once 'app/registroevento/model.php';
-
-if (!isset($_SESSION["current_user"]) || !$_SESSION["current_user"]->is_authenticated()) {
-    header("Location: index.php");
-    exit();
-}
+startAPI(null, ["evento", "registroevento"]);
 
 $accion = getvar('accion');
 $registro = new Registro();

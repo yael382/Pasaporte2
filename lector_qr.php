@@ -1,7 +1,6 @@
 <?php
-
-include_once "app/usuario/model.php";
-include_once 'helpers/vars.php';
+include_once __DIR__ . "/init.php";
+startAPI();
 ?><!DOCTYPE html>
 <html lang="es-MX">
 <head>

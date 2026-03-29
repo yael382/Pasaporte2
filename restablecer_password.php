@@ -1,13 +1,10 @@
 <?php
-session_start();
 
-date_default_timezone_set('America/Mexico_City');
+include_once __DIR__ . "/init.php";
+
+startAPI("login");
+
 include_once 'app/Olvidar-contrasena/controlador_recuperacion.php';
-
-if (isset($_SESSION["current_user"]) && $_SESSION["current_user"]->is_authenticated()) {
-    header('Location: index.php');
-    exit();
-}
 
 $token = $_GET['token'] ?? '';
 $mensajes = procesar_restablecimiento_password($token);

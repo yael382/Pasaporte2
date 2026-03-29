@@ -4,7 +4,7 @@ $data = $object->getAll();
 
 <div class="clearfix mb-3">
 <div class="btn-group float-end" role="group" aria-label="Barra de Herramientas">
-    <?php if($_SESSION["current_user"]->can("permiso.add_permiso")): ?>
+    <?php if(currentUserCan("permiso.add_permiso")): ?>
     <a type="button" class="btn btn-outline-primary" href="permisos.php?accion=crear">
         <i class="fa-solid fa-plus"></i>
         Nuevo
@@ -27,19 +27,19 @@ $data = $object->getAll();
                 <td><?= htmlspecialchars($permiso['nombre']) ?></td>
                 <td><?= htmlspecialchars($permiso['tipo'] . "." . $permiso['codename']) ?></td>
                 <td class="text-center">
-                    <?php if($_SESSION["current_user"]->can("permiso.view_permiso")): ?>
+                    <?php if(currentUserCan("permiso.view_permiso")): ?>
                     <a title="Mostrar" class="btn btn-outline-secondary" href="permisos.php?accion=mostrar&pk=<?= urlencode($permiso['id']) ?>">
                         <i class="fa-regular fa-eye"></i>
                         <!-- Mostrar -->
                     </a>
                     <?php endif; ?>
-                    <?php if($_SESSION["current_user"]->can("permiso.change_permiso")): ?>
+                    <?php if(currentUserCan("permiso.change_permiso")): ?>
                     <a title="Actualizar" class="btn btn-outline-secondary" href="permisos.php?accion=actualizar&pk=<?= urlencode($permiso['id']) ?>">
                         <i class="fa-solid fa-pen-to-square"></i>
                         <!-- Actualizar -->
                     </a>
                     <?php endif; ?>
-                    <?php if($_SESSION["current_user"]->can("permiso.delete_permiso")): ?>
+                    <?php if(currentUserCan("permiso.delete_permiso")): ?>
                     <a title="Eliminar" class="btn btn-outline-danger" href="permisos.php?accion=eliminar&pk=<?= urlencode($permiso['id']) ?>" onclick="return confirm('¿Eliminar este permiso?')">
                         <i class="fa-regular fa-trash-can"></i>
                         <!-- Eliminar -->

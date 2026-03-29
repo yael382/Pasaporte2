@@ -1,7 +1,8 @@
 <?php
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
+startAPI();
+
 include_once 'app/registro/controlador_registro.php';
 
 if (isset($_SESSION["current_user"]) && $_SESSION["current_user"]) {

@@ -1,11 +1,9 @@
 <?php
-include_once "app/usuario/model.php";
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
-include_once "helpers/vars.php";
+startAPI();
 
-if(getvar("accion") === "login") {
+if(checkVar("accion", "login")) {
     $username = getvar("username");
     $password = getvar("password");
     if($username && $password) {

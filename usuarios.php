@@ -1,50 +1,35 @@
 <?php
-include_once "app/usuario/model.php";
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
-include_once 'helpers/vars.php';
-include_once 'app/usuario/model.php';
-include_once 'app/perfil/model.php';
+startAPI("usuario.*", ["usuario", "perfil", ]);
 
 $accion = getvar('accion');
 $object = new Usuario();
 
-if ($accion === 'logout' || $accion === 'salir') {
-    $object->logout();
-    header('Location: index.php');
-    exit();
-}
-
-if (!isset($_SESSION["current_user"]) || !$_SESSION["current_user"]->can("usuario.*")) {
-    header("Location: index.php");
-    exit();
-}
-
 $errors = [];
 
-if ($accion === 'create' && $_SESSION["current_user"]->can("usuario.add_usuario")) {
+if (checkVar("accion", 'create') && currentUserCan("usuario.add_usuario")) {
     $object->fromArray($_POST);
     try {
-        $object->save();
+        $object->save(true, true);
         header('Location: usuarios.php?accion=mostrar&pk=' . urlencode($object->pk));
     } catch (Exception $e) {
         error_log("Error saving user: " . $e->getMessage());
         $errors[] = "Error al guardar el usuario: " . $e->getMessage();
         $accion = 'crear';
     }
-} elseif ($accion === 'update' && $_SESSION["current_user"]->can("usuario.change_usuario")) {
+} elseif (checkVar("accion", 'update') && currentUserCan("usuario.change_usuario")) {
     $object->fromArray($_POST);
     $object->pk = getvar('pk');
     try {
-        $object->save();
+        $object->save(true, true);
         header('Location: usuarios.php?accion=mostrar&pk=' . urlencode($object->pk));
     } catch (Exception $e) {
         error_log("Error saving user: " . $e->getMessage());
         $errors[] = "Error al guardar el usuario: " . $e->getMessage();
         $accion = 'actualizar';
     }
-} elseif ($accion === 'restaurar-pwd' && $_SESSION["current_user"]->can("usuario.change_usuario")) {
+} elseif (checkVar("accion", 'restaurar-pwd') && currentUserCan("usuario.restaturar_contraseña_otros")) {
     $username     = trim(getvar('username') ?? '');
     $password     = getvar('password') ?? '';
     $pwd_confirm  = getvar('password_confirm') ?? '';
@@ -77,7 +62,7 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("usuario.add_usuario"
             }
         }
     }
-} elseif (($accion === 'delete' || $accion === 'eliminar') && $_SESSION["current_user"]->can("usuario.delete_usuario")) {
+} elseif (checkVar("accion", ['delete', 'eliminar']) && currentUserCan("usuario.delete_usuario")) {
     $object->pk = getvar('pk');
     try {
         $object->delete();
@@ -92,10 +77,7 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("usuario.add_usuario"
 <html lang="es-MX">
 
 <head>
-    <?php
-
-    include 'templates/head.php';
-    ?>
+    <?php include 'templates/head.php'; ?>
 </head>
 
 <body>
@@ -104,11 +86,7 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("usuario.add_usuario"
     <main class="container">
         <h1>Usuarios</h1>
 
-        <?php foreach ($errors as $error): ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo htmlspecialchars($error); ?>
-            </div>
-        <?php endforeach; ?>
+        <?php include 'templates/messages.php'; ?>
 
         <?php if (isset($success)): ?>
             <div class="alert alert-success" role="alert">
@@ -118,21 +96,21 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("usuario.add_usuario"
         <?php endif; ?>
 
         <?php
-        if(($accion === 'listar' || $accion === null) && $_SESSION["current_user"]->can("usuario.list_usuario")) {
+        if(($accion === 'listar' || $accion === null) && currentUserCan("usuario.list_usuario")) {
             include 'app/usuario/listar.php';
-        } elseif($accion === 'actualizar' && $_SESSION["current_user"]->can("usuario.change_usuario")) {
+        } elseif(checkVar("accion", 'actualizar') && currentUserCan("usuario.change_usuario")) {
             include 'app/usuario/actualizar.php';
-        } elseif ($accion === 'crear' && $_SESSION["current_user"]->can("usuario.add_usuario")) {
+        } elseif (checkVar("accion", 'crear') && currentUserCan("usuario.add_usuario")) {
             include 'app/usuario/crear.php';
-        } elseif ($accion === 'mostrar' && $_SESSION["current_user"]->can("usuario.view_usuario")) {
+        } elseif (checkVar("accion", 'mostrar') && currentUserCan("usuario.view_usuario")) {
             include 'app/usuario/mostrar.php';
-        } elseif ($accion === 'restaurar-pwd' && $_SESSION["current_user"]->can("usuario.change_usuario")) {
+        } elseif (checkVar("accion", 'restaurar-pwd') && currentUserCan("usuario.restaturar_contraseña_otros")) {
             include 'app/usuario/restaurar_pwd.php';
-        } elseif ($accion === 'carga-masiva' && $_SESSION["current_user"]->can("usuario.add_usuario_masivo")) {
+        } elseif (checkVar("accion", 'carga-masiva') && currentUserCan("usuario.add_usuario_masivo")) {
             include 'app/usuario/carga-masiva.php';
-        } elseif ($accion === 'add-many-step-2' && $_SESSION["current_user"]->can("usuario.add_usuario_masivo")) {
+        } elseif (checkVar("accion", 'add-many-step-2') && currentUserCan("usuario.add_usuario_masivo")) {
             include 'app/usuario/carga-masiva-s2.php';
-        } elseif ($accion === 'add-many-step-3' && $_SESSION["current_user"]->can("usuario.add_usuario_masivo")) {
+        } elseif (checkVar("accion", 'add-many-step-3') && currentUserCan("usuario.add_usuario_masivo")) {
             include 'app/usuario/carga-masiva-s3.php';
         }
         ?>

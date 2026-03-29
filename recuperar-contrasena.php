@@ -1,8 +1,8 @@
 <?php
-include_once 'app/usuario/model.php';
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
+startAPI();
+
 include_once 'app/Olvidar-contrasena/controlador_recuperacion.php';
 
 if (isset($_SESSION["current_user"]) && $_SESSION["current_user"]->is_authenticated()) {

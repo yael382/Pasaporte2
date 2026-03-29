@@ -1,14 +1,9 @@
 <?php
-include_once "app/usuario/model.php";
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
+startAPI("otro.registrar_en_evento");
+
 include_once 'app/registroevento/controller.php';
-
-if (!isset($_SESSION["current_user"]) || !$_SESSION["current_user"]->can("otro.registrar_en_evento")) {
-    header("Location: index.php");
-    exit();
-}
 
 ?><!DOCTYPE html>
 <html lang="es-MX">

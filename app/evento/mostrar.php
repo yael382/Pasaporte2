@@ -19,26 +19,26 @@ $participantes = $tblRegistro->query(
 
 <div class="clearfix mb-3">
 <div class="btn-group float-end" role="group" aria-label="Barra de Herramientas">
-    <?php if($_SESSION["current_user"]->can("evento.change_evento")): ?>
+    <?php if(currentUserCan("evento.change_evento")): ?>
     <a title="Actualizar" class="btn btn-outline-secondary" href="eventos.php?accion=actualizar&pk=<?= urlencode($object->pk) ?>">
         <i class="fa-solid fa-pen-to-square"></i>
         <!-- Actualizar -->
     </a>
     <?php endif; ?>
-    <?php if($_SESSION["current_user"]->can("evento.delete_evento")): ?>
+    <?php if(currentUserCan("evento.delete_evento")): ?>
     <a title="Eliminar" class="btn btn-outline-danger" href="eventos.php?accion=eliminar&pk=<?= urlencode($object->pk) ?>"
         onclick="return confirm('¿Eliminar este evento?')">
         <i class="fa-regular fa-trash-can"></i>
         <!-- Eliminar -->
         <?php endif; ?>
     </a>
-    <?php if($_SESSION["current_user"]->can("evento.list_evento")): ?>
+    <?php if(currentUserCan("evento.list_evento")): ?>
     <a title="Ver todos" type="button" class="btn btn-outline-secondary" href="eventos.php?accion=listar">
         <i class="fa-solid fa-list-ul"></i>
         <!-- Ver todos -->
     </a>
     <?php endif; ?>
-    <?php if($_SESSION["current_user"]->can("evento.add_evento")): ?>
+    <?php if(currentUserCan("evento.add_evento")): ?>
     <a title="Nuevo" type="button" class="btn btn-outline-secondary" href="eventos.php?accion=crear">
         <i class="fa-solid fa-plus"></i>
         <!-- Nuevo -->

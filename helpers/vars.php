@@ -30,3 +30,19 @@ function getvar($variable): mixed {
     }
     return $var;
 }
+
+function checkVar($variable, $value, $strict_mode = false) : bool {
+    $var_value = getvar($variable);
+    if(!is_array($value)) {
+        return $strict_mode ?
+            $var_value === $value
+            : $var_value !== null && (strtolower($var_value) == strtolower($value));
+    } else {
+        foreach($value as $v) {
+            if(checkVar($variable, $v, $strict_mode)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}

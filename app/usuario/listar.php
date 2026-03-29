@@ -5,20 +5,20 @@ $data = $object->getAll();
 <div class="clearfix mb-3">
 <div class="btn-group float-end" role="group" aria-label="Barra de Herramientas">
 
-    <?php if($_SESSION["current_user"]->can("usuario.change_usuario")): ?>
+    <?php if(currentUserCan("usuario.restaturar_contraseña_otros")): ?>
     <a type="button" class="btn btn-outline-secondary" href="usuarios.php?accion=restaurar-pwd">
         <i class="fa-solid fa-key"></i>
         Restaurar Contraseña
     </a>
     <?php endif; ?>
 
-    <?php if ($_SESSION["current_user"]->can("usuario.add_usuario_masivo")): ?>
+    <?php if (currentUserCan("usuario.add_usuario_masivo")): ?>
         <a type="button" class="btn btn-outline-primary" href="usuarios.php?accion=carga-masiva">
             <i class="fa-solid fa-rectangle-list"></i>
             Carga Masiva
         </a>
     <?php endif; ?>
-    <?php if($_SESSION["current_user"]->can("usuario.add_usuario")): ?>
+    <?php if(currentUserCan("usuario.add_usuario")): ?>
     <a type="button" class="btn btn-outline-primary" href="usuarios.php?accion=crear">
         <i class="fa-solid fa-plus"></i>
         Nuevo
@@ -68,19 +68,19 @@ $data = $object->getAll();
                     <?php endif; ?>
                 </td>
                 <td class="text-center">
-                    <?php if($_SESSION["current_user"]->can("usuario.view_usuario")): ?>
+                    <?php if(currentUserCan("usuario.view_usuario")): ?>
                     <a title="Mostrar" class="btn btn-outline-secondary" href="usuarios.php?accion=mostrar&pk=<?= urlencode($usuario['id']) ?>">
                         <i class="fa-regular fa-eye"></i>
                         <!-- Mostrar -->
                     </a>
                     <?php endif; ?>
-                    <?php if($_SESSION["current_user"]->can("usuario.change_usuario")): ?>
+                    <?php if(currentUserCan("usuario.change_usuario")): ?>
                     <a title="Actualizar" class="btn btn-outline-secondary" href="usuarios.php?accion=actualizar&pk=<?= urlencode($usuario['id']) ?>">
                         <i class="fa-solid fa-pen-to-square"></i>
                         <!-- Actualizar -->
                     </a>
                     <?php endif; ?>
-                    <?php if($_SESSION["current_user"]->can("usuario.delete_usuario")): ?>
+                    <?php if(currentUserCan("usuario.delete_usuario")): ?>
                     <a title="Eliminar" class="btn btn-outline-danger" href="usuarios.php?accion=eliminar&pk=<?= urlencode($usuario['id']) ?>" onclick="return confirm('¿Eliminar este usuario?')">
                         <i class="fa-regular fa-trash-can"></i>
                         <!-- Eliminar -->

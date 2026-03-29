@@ -1,11 +1,4 @@
-<?php
-include_once "app/usuario/model.php";
-session_start();
-
-date_default_timezone_set('America/Mexico_City');
-include_once "helpers/vars.php";
-
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es-MX">
 <head>
     <?php include 'templates/head.php'; ?>

@@ -5,26 +5,26 @@ $object->get(getvar('pk'));
 
 <div class="clearfix mb-3">
 <div class="btn-group float-end" role="group" aria-label="Barra de Herramientas">
-    <?php if($_SESSION["current_user"]->can("usuario.change_usuario")): ?>
+    <?php if(currentUserCan("usuario.change_usuario")): ?>
     <a title="Actualizar" class="btn btn-outline-secondary" href="usuarios.php?accion=actualizar&pk=<?= urlencode($object->pk) ?>">
         <i class="fa-solid fa-pen-to-square"></i>
         <!-- Actualizar -->
     </a>
     <?php endif; ?>
-    <?php if($_SESSION["current_user"]->can("usuario.delete_usuario")): ?>
+    <?php if(currentUserCan("usuario.delete_usuario")): ?>
     <a title="Eliminar" class="btn btn-outline-danger" href="usuarios.php?accion=eliminar&pk=<?= urlencode($object->pk) ?>"
         onclick="return confirm('¿Eliminar este usuario?')">
         <i class="fa-regular fa-trash-can"></i>
         <!-- Eliminar -->
     </a>
     <?php endif; ?>
-    <?php if($_SESSION["current_user"]->can("usuario.list_usuario")): ?>
+    <?php if(currentUserCan("usuario.list_usuario")): ?>
     <a title="Ver todos" type="button" class="btn btn-outline-secondary" href="usuarios.php?accion=listar">
         <i class="fa-solid fa-list-ul"></i>
         <!-- Ver todos -->
     </a>
     <?php endif; ?>
-    <?php if($_SESSION["current_user"]->can("usuario.add_usuario")): ?>
+    <?php if(currentUserCan("usuario.add_usuario")): ?>
     <a title="Nuevo" type="button" class="btn btn-outline-secondary" href="usuarios.php?accion=crear">
         <i class="fa-solid fa-plus"></i>
         <!-- Nuevo -->
