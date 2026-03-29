@@ -5,7 +5,7 @@ $data = $object->getAll();
 <div class="clearfix mb-3">
 <div class="btn-group float-end" role="group" aria-label="Barra de Herramientas">
 
-    <?php if($_SESSION["current_user"]->can("usuario.change_usuario")): ?>
+    <?php if($_SESSION["current_user"]->can("usuario.restaturar_contraseña_otros")): ?>
     <a type="button" class="btn btn-outline-secondary" href="usuarios.php?accion=restaurar-pwd">
         <i class="fa-solid fa-key"></i>
         Restaurar Contraseña

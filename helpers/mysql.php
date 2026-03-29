@@ -1,5 +1,5 @@
 <?php
-class MyDatabase
+class DataBase
 {
 	/** @var mysqli */
 	private $conn;

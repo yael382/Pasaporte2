@@ -1,15 +1,7 @@
-
 <?php
-include_once "app/usuario/model.php";
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
-include_once 'helpers/vars.php';
-
-if (!isset($_SESSION["current_user"]) || !$_SESSION["current_user"]->can("migracion.run_migracion")) {
-    header("Location: index.php");
-    exit();
-}
+startAPI("migracion.run_migracion");
 
 require_once 'app/migracion/migrationcontroller.php';
 $controller = new MigrationController();

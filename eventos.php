@@ -1,22 +1,7 @@
 <?php
-include_once "app/usuario/model.php";
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
-include_once 'helpers/db.php';
-include_once 'helpers/vars.php';
-include_once 'app/evento/model.php';
-
-if (!isset($_SESSION["current_user"])) {
-    header("Location: index.php");
-    exit();
-}
-
-if (!$_SESSION["current_user"]->can("evento.*") &&
-    $accion !== null && $accion !== 'listar' && $accion !== 'mostrar') {
-    header("Location: index.php");
-    exit();
-}
+startAPI("evento.*", "evento");
 
 $accion = getvar('accion');
 $object = new Evento();

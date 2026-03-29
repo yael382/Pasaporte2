@@ -1,13 +1,9 @@
 <?php
-include_once "app/usuario/model.php";
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
+startAPI("otro.restaturar_contraseña");
+
 include_once "app/Olvidar-contrasena/controlador_olvide_mi_contrasena.php";
-if (!isset($_SESSION["current_user"]) || !$_SESSION["current_user"]->is_authenticated()) {
-    header("Location: index.php");
-    exit();
-}
 
 $errors = procesar_cambio_password();
 

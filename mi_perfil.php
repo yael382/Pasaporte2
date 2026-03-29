@@ -1,14 +1,7 @@
 <?php
-include_once "app/usuario/model.php";
-session_start();
+include_once __DIR__ . "/init.php";
 
-date_default_timezone_set('America/Mexico_City');
-include_once 'helpers/vars.php';
-
-if (!isset($_SESSION["current_user"]) || !$_SESSION["current_user"]->is_authenticated()) {
-    header("Location: index.php");
-    exit();
-}
+startAPI("otro.update_perfil");
 
 $accion = getvar('accion');
 $errors = [];
@@ -16,7 +9,8 @@ $errors = [];
 if ($accion === 'update') {
     $camposPermitidos = ['nombre', 'apaterno', 'amaterno', 'categoria', 'grupo', 'email', 'whatsapp'];
 
-    $object = new Usuario();$object->get($_SESSION["current_user"]->pk);
+    $object = new Usuario();
+    $object->get($_SESSION["current_user"]->pk);
 
     $datosActualizar = [];
     foreach ($camposPermitidos as $campo) {

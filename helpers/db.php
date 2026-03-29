@@ -1,11 +1,10 @@
 <?php
 /** For MySQL connection, queries, and table management. Uses MySQLi with prepared statements for security and simplicity. */
 require_once __DIR__ . '/mysql.php';
-$MyDBClass = MyDatabase::class;
 
 class Table
 {
-	/** @var MyDatabase Static connection shared across all Table instances */
+	/** @var DataBase Static connection shared across all Table instances */
 	private static $connection = null;
 
 	/** @var string Table name for this instance */
@@ -19,11 +18,10 @@ class Table
 	 * @return MySQLDatabase
 	 * @throws Exception
 	 */
-	public static function getConnection(array $config = []) : MyDatabase
+	public static function getConnection(array $config = []) : DataBase
 	{
-        global $MyDBClass;
 		if (self::$connection === null) {
-			self::$connection = new $MyDBClass($config);
+			self::$connection = new DataBase($config);
 		}
 		return self::$connection;
 	}

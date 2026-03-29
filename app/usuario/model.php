@@ -8,8 +8,6 @@ include_once __DIR__ . '/../../helpers/db.php';
 include_once __DIR__ . '/../permiso/model.php';
 include_once __DIR__ . '/../perfil/model.php';
 
-use \De\Set as Set;
-
 class Usuario extends Model
 {
     private static $db_config = null;
@@ -67,7 +65,7 @@ class Usuario extends Model
         return $data;
     }
 
-    public function save(): bool {
+    public function save($take_profiles=false, $take_permissions=false): bool {
         if($this->password) {
             $info = password_get_info($this->password);
             if($info['algo'] === 0 || $info['algo'] ===  null) {
@@ -86,18 +84,22 @@ class Usuario extends Model
             $current_pk = $this->pk;
             $this->data = $tmp_data;
             $this->pk = $current_pk;
-            self::$tbl_usuario_tiene_permiso->delete("usuario_id = ?", [$this->pk]);
-            $permisos = getvar("permisos");
-            if (is_array($permisos)) {
-                foreach ($permisos as $perm) {
-                    self::$tbl_usuario_tiene_permiso->insert(["usuario_id" => $this->pk, "permiso_id" => $perm]);
+            if($take_permissions) {
+                self::$tbl_usuario_tiene_permiso->delete("usuario_id = ?", [$this->pk]);
+                $permisos = getvar("permisos");
+                if (is_array($permisos)) {
+                    foreach ($permisos as $perm) {
+                        self::$tbl_usuario_tiene_permiso->insert(["usuario_id" => $this->pk, "permiso_id" => $perm]);
+                    }
                 }
             }
-            self::$tbl_usuario_tiene_perfil->delete("usuario_id = ?", [$this->pk]);
-            $perfiles = getvar("perfiles");
-            if (is_array($perfiles)) {
-                foreach ($perfiles as $perm) {
-                    self::$tbl_usuario_tiene_perfil->insert(["usuario_id" => $this->pk, "perfil_id" => $perm]);
+            if($take_profiles) {
+                self::$tbl_usuario_tiene_perfil->delete("usuario_id = ?", [$this->pk]);
+                $perfiles = getvar("perfiles");
+                if (is_array($perfiles)) {
+                    foreach ($perfiles as $perm) {
+                        self::$tbl_usuario_tiene_perfil->insert(["usuario_id" => $this->pk, "perfil_id" => $perm]);
+                    }
                 }
             }
             return true;
@@ -191,13 +193,12 @@ class Usuario extends Model
         return false;
     }
 
-    public function logout(): void {
+    public static function logout(): void {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         unset($_SESSION["current_user"]);
         session_destroy();
-        $this->authenticated = false;
     }
 
     public function getQrData(): string {

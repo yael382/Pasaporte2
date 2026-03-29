@@ -1,21 +1,13 @@
 <?php
-include_once "app/usuario/model.php";
-session_start();
+include_once "init.php";
 
-date_default_timezone_set('America/Mexico_City');
-include_once 'helpers/vars.php';
-include_once 'app/permiso/model.php';
-
-if (!isset($_SESSION["current_user"]) || !$_SESSION["current_user"]->can("permiso.*")) {
-    header("Location: index.php");
-    exit();
-}
+startAPI("permiso.*", "permiso");
 
 $accion = getvar('accion');
 $object = new Permiso();
 $errors = [];
 
-if ($accion === 'create' && $_SESSION["current_user"]->can("permiso.add_permiso")) {
+if (checkVar("accion", 'create') && currentUserCan("permiso.add_permiso")) {
     $object->fromArray($_POST);
     try {
         $object->save();
@@ -25,7 +17,7 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("permiso.add_permiso"
         $errors[] = "Error al guardar el permiso: " . $e->getMessage();
         $accion = 'crear';
     }
-} elseif ($accion === 'update' && $_SESSION["current_user"]->can("permiso.change_permiso")) {
+} elseif (checkVar("accion", 'update') && currentUserCan("permiso.change_permiso")) {
     $object->fromArray($_POST);
     $object->pk = getvar('pk');
     try {
@@ -36,7 +28,7 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("permiso.add_permiso"
         $errors[] = "Error al guardar el permiso: " . $e->getMessage();
         $accion = 'actualizar';
     }
-} elseif (($accion === 'delete' || $accion === 'eliminar') && $_SESSION["current_user"]->can("permiso.delete_permiso")) {
+} elseif (checkVar("accion", ['delete', 'eliminar']) && currentUserCan("permiso.delete_permiso")) {
     $object->pk = getvar('pk');
     try {
         $object->delete();
@@ -51,10 +43,7 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("permiso.add_permiso"
 <html lang="es-MX">
 
 <head>
-    <?php
-
-    include 'templates/head.php';
-    ?>
+    <?php include 'templates/head.php'; ?>
 </head>
 
 <body>
@@ -63,20 +52,16 @@ if ($accion === 'create' && $_SESSION["current_user"]->can("permiso.add_permiso"
     <main class="container">
         <h1>Permisos</h1>
 
-        <?php foreach ($errors as $error): ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo htmlspecialchars($error); ?>
-            </div>
-        <?php endforeach; ?>
+        <?php include 'templates/messages.php'; ?>
 
         <?php
-        if(($accion === 'listar' || $accion === null) && $_SESSION["current_user"]->can("permiso.list_permiso")) {
+        if(($accion === 'listar' || $accion === null) && currentUserCan("permiso.list_permiso")) {
             include 'app/permiso/listar.php';
-        } elseif($accion === 'actualizar' && $_SESSION["current_user"]->can("permiso.change_permiso")) {
+        } elseif(checkVar("accion", 'actualizar') && currentUserCan("permiso.change_permiso")) {
             include 'app/permiso/actualizar.php';
-        } elseif ($accion === 'crear' && $_SESSION["current_user"]->can("permiso.add_permiso")) {
+        } elseif (checkVar("accion", 'crear') && currentUserCan("permiso.add_permiso")) {
             include 'app/permiso/crear.php';
-        } elseif ($accion === 'mostrar' && $_SESSION["current_user"]->can("permiso.view_permiso")) {
+        } elseif (checkVar("accion", 'mostrar') && currentUserCan("permiso.view_permiso")) {
             include 'app/permiso/mostrar.php';
         }
         ?>
