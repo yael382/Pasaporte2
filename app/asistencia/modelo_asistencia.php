@@ -3,6 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+date_default_timezone_set('America/Mexico_City');
+
 include_once __DIR__ . '/../../helpers/db.php';
 include_once __DIR__ . '/../evento/model.php';
 include_once __DIR__ . '/../usuario/model.php';
@@ -110,6 +112,25 @@ class Asistencia
 
         $sql .= " ORDER BY a.fecha_entrada DESC";
         return $this->tbl->query($sql, $params);
+    }
+
+    public function getTodayAttendanceCount(): int
+    {
+        $today = date('Y-m-d');
+        $sql = "SELECT COUNT(usuario_id) as total FROM asistencia WHERE DATE(fecha_entrada) = ?";
+        $result = $this->tbl->query($sql, [$today]);
+        return (int)($result[0]['total'] ?? 0);
+    }
+
+    public function getLatestAttendance(): ?array
+    {
+        $sql = "SELECT u.nombre, u.apaterno, a.fecha_entrada
+                FROM asistencia a
+                INNER JOIN usuario u ON u.id = a.usuario_id
+                ORDER BY a.fecha_entrada DESC
+                LIMIT 1";
+        $result = $this->tbl->query($sql);
+        return $result[0] ?? null;
     }
 
     // --- HELPERS PARA SELECTORES ---
