@@ -14,7 +14,7 @@ $mis_eventos = $registro->listarPorUsuario($usuario_id);
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover table-sm">
+                <table id="data-list" class="table table-hover table-sm">
                     <thead>
                         <tr>
                             <th>Nombre</th>
